@@ -128,8 +128,10 @@ class TamarReadingGame {
             storyCard.innerHTML = `
                 <img src="${story.image}" alt="${story.title}" class="story-image" 
                      onerror="this.style.display='none'">
-                <div class="story-title">${story.title}</div>
-                <div class="story-word-count">${story.words.length} מילים</div>
+                <div class="story-info">
+                    <div class="story-title">${story.title}</div>
+                    <div class="story-word-count">${story.words.length} מילים</div>
+                </div>
             `;
             
             storyCard.addEventListener('click', () => {

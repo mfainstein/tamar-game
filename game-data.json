@@ -2,7 +2,7 @@
     "stories": [
         {
             "id": "blocked",
-            "title": "חסום",
+            "title": "דרכים חסומות",
             "image": "images/blocked/blocked.png",
             "background": "images/blocked/blocked_background.png",
             "words": [
@@ -162,7 +162,7 @@
         },
         {
             "id": "new_house",
-            "title": "בית חדש",
+            "title": "בית חדשה",
             "image": "images/new_house/new_house.png",
             "background": "images/new_house/new_house_background.png",
             "words": [
