@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סיפורי תמר - משחק קריאה</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round:wght@400;700&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Story Background Overlay -->
+        <div id="story-overlay" class="story-overlay"></div>
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-container">
+                <div class="cover-image-container">
+                    <img src="stories_for_tamar_cover.png" alt="סיפורי תמר" class="cover-image">
+                    <div class="sparkle-overlay">
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                    </div>
+                </div>
+                
+                <div class="welcome-content">
+                    <h1 class="welcome-title">ברוכה הבאה תמר!</h1>
+                    <p class="welcome-subtitle">בואי נלמד קריאה יחד</p>
+                    
+                    <button id="play-btn" class="play-button">
+                        <div class="play-icon">▶</div>
+                        <span>בואי נשחק!</span>
+                        <div class="button-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Selection Screen -->
+        <div id="story-selection" class="screen">
+            <div class="screen-header">
+                <button id="back-to-welcome" class="back-btn">
+                    <span>🏠</span>
+                    <span>חזרה</span>
+                </button>
+                <h2 class="screen-title">בחרי סיפור</h2>
+            </div>
+            
+            <div class="stories-container">
+                <div id="stories-grid" class="stories-grid">
+                    <!-- Stories will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <button id="back-to-stories" class="back-btn">
+                    <span>📚</span>
+                    <span>הסיפורים</span>
+                </button>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div id="progress-text" class="progress-text">1 / 15</div>
+                </div>
+                
+                <div class="game-header-right">
+                    <button id="audio-toggle" class="audio-toggle-btn" title="השמע/השתק">
+                        <span class="audio-icon">🔊</span>
+                    </button>
+                    <div id="game-type" class="game-type-badge">משחק 1</div>
+                </div>
+            </div>
+            
+            <div class="game-content">
+                <div id="game-area" class="game-area">
+                    <!-- Game content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Celebration Screen -->
+        <div id="celebration-screen" class="screen">
+            <div class="celebration-container">
+                <lottie-player
+                    src="https://assets5.lottiefiles.com/packages/lf20_s2lryxtd.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 300px; height: 300px;"
+                    loop
+                    autoplay>
+                </lottie-player>
+                
+                <h1 class="celebration-title">🎉 מעולה! 🎉</h1>
+                <p class="celebration-message">סיימת את הסיפור בהצלחה!</p>
+                
+                <div class="celebration-buttons">
+                    <button id="play-again-btn" class="btn-primary">
+                        <span>🔄</span>
+                        <span>עוד פעם</span>
+                    </button>
+                    <button id="choose-story-btn" class="btn-secondary">
+                        <span>📖</span>
+                        <span>סיפור אחר</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

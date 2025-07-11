@@ -1,0 +1,235 @@
+{
+    "stories": [
+        {
+            "id": "blocked",
+            "title": "חסום",
+            "image": "images/blocked/blocked.png",
+            "background": "images/blocked/blocked_background.png",
+            "words": [
+                {
+                    "word": "אופניים",
+                    "image": "images/blocked/bicycle.png",
+                    "firstLetter": "א"
+                },
+                {
+                    "word": "גדר",
+                    "image": "images/blocked/fence.png",
+                    "firstLetter": "ג"
+                },
+                {
+                    "word": "שער",
+                    "image": "images/blocked/gate.png",
+                    "firstLetter": "ש"
+                },
+                {
+                    "word": "מכנסיים",
+                    "image": "images/blocked/pants.png",
+                    "firstLetter": "מ"
+                },
+                {
+                    "word": "עץ",
+                    "image": "images/blocked/tree.png",
+                    "firstLetter": "ע"
+                }
+            ]
+        },
+        {
+            "id": "blue_ad_orange_ad",
+            "title": "פרסומת כחולה פרסומת כתומה",
+            "image": "images/blue_ad_orange_ad/blue_ad_orange_ad.png",
+            "background": "images/blue_ad_orange_ad/blue_ad_orange_ad_background.png",
+            "words": [
+                {
+                    "word": "כחול",
+                    "image": "images/blue_ad_orange_ad/blue.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "עיר",
+                    "image": "images/blue_ad_orange_ad/city.png",
+                    "firstLetter": "ע"
+                },
+                {
+                    "word": "מנוף",
+                    "image": "images/blue_ad_orange_ad/manof.png",
+                    "firstLetter": "מ"
+                },
+                {
+                    "word": "כתום",
+                    "image": "images/blue_ad_orange_ad/orange.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "פארק",
+                    "image": "images/blue_ad_orange_ad/park.png",
+                    "firstLetter": "פ"
+                },
+                {
+                    "word": "שמיים",
+                    "image": "images/blue_ad_orange_ad/sky.png",
+                    "firstLetter": "ש"
+                }
+            ]
+        },
+        {
+            "id": "good_morning",
+            "title": "בוקר טוב",
+            "image": "images/good_morning/good_morning.png",
+            "background": "images/good_morning/good_morning_background.png",
+            "words": [
+                {
+                    "word": "כיסא",
+                    "image": "images/good_morning/chair.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "צבי",
+                    "image": "images/good_morning/deer.png",
+                    "firstLetter": "צ"
+                },
+                {
+                    "word": "אמו",
+                    "image": "images/good_morning/emo.png",
+                    "firstLetter": "א"
+                },
+                {
+                    "word": "קסדה",
+                    "image": "images/good_morning/helmet.png",
+                    "firstLetter": "ק"
+                },
+                {
+                    "word": "תוכי",
+                    "image": "images/good_morning/parrot.png",
+                    "firstLetter": "ת"
+                },
+                {
+                    "word": "עץ",
+                    "image": "images/good_morning/tree.png",
+                    "firstLetter": "ע"
+                }
+            ]
+        },
+        {
+            "id": "green_stations",
+            "title": "תחנות ירוקות",
+            "image": "images/green_stations/green_stations.png",
+            "background": "images/green_stations/green_stations_background.png",
+            "words": [
+                {
+                    "word": "אופניים",
+                    "image": "images/green_stations/bicycle.png",
+                    "firstLetter": "א"
+                },
+                {
+                    "word": "בית",
+                    "image": "images/green_stations/house.png",
+                    "firstLetter": "ב"
+                },
+                {
+                    "word": "כביש",
+                    "image": "images/green_stations/road.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "חבלים",
+                    "image": "images/green_stations/ropes.png",
+                    "firstLetter": "ח"
+                },
+                {
+                    "word": "תחנה",
+                    "image": "images/green_stations/station.png",
+                    "firstLetter": "ת"
+                },
+                {
+                    "word": "גלגל",
+                    "image": "images/green_stations/wheel.png",
+                    "firstLetter": "ג"
+                }
+            ]
+        },
+        {
+            "id": "grocery",
+            "title": "מכולת",
+            "image": "images/grocery/grocery.png",
+            "background": "images/grocery/grocery_background.png",
+            "words": [
+                {
+                    "word": "מכולת",
+                    "image": "images/grocery/grocery.png",
+                    "firstLetter": "מ"
+                }
+            ]
+        },
+        {
+            "id": "new_house",
+            "title": "בית חדש",
+            "image": "images/new_house/new_house.png",
+            "background": "images/new_house/new_house_background.png",
+            "words": [
+                {
+                    "word": "שקית",
+                    "image": "images/new_house/bag.png",
+                    "firstLetter": "ש"
+                },
+                {
+                    "word": "כיסא",
+                    "image": "images/new_house/chair.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "סולם",
+                    "image": "images/new_house/ladder.png",
+                    "firstLetter": "ס"
+                },
+                {
+                    "word": "מנורה",
+                    "image": "images/new_house/lamp.png",
+                    "firstLetter": "מ"
+                },
+                {
+                    "word": "צבע",
+                    "image": "images/new_house/paint.png",
+                    "firstLetter": "צ"
+                },
+                {
+                    "word": "פועל",
+                    "image": "images/new_house/worker.png",
+                    "firstLetter": "פ"
+                }
+            ]
+        },
+        {
+            "id": "yossi",
+            "title": "יוסי",
+            "image": "images/yossi/yossi.png",
+            "background": "images/yossi/yossi_background.png",
+            "words": [
+                {
+                    "word": "כדור פורח",
+                    "image": "images/yossi/balloon.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "אבא",
+                    "image": "images/yossi/dad.png",
+                    "firstLetter": "א"
+                },
+                {
+                    "word": "כובע",
+                    "image": "images/yossi/hat.png",
+                    "firstLetter": "כ"
+                },
+                {
+                    "word": "אמא",
+                    "image": "images/yossi/mother.png",
+                    "firstLetter": "א"
+                },
+                {
+                    "word": "חולצה",
+                    "image": "images/yossi/shirt.png",
+                    "firstLetter": "ח"
+                }
+            ]
+        }
+    ]
+}
