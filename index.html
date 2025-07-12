@@ -57,6 +57,70 @@
             </div>
         </div>
 
+        <!-- Story Mode Selection Screen -->
+        <div id="mode-selection" class="screen">
+            <div class="screen-header">
+                <button id="back-to-stories-from-mode" class="back-btn">
+                    <span>📚</span>
+                    <span>הסיפורים</span>
+                </button>
+                <h2 id="mode-selection-title" class="screen-title">בחרי מה לעשות</h2>
+            </div>
+            
+            <div class="mode-selection-container">
+                <div class="mode-buttons">
+                    <button id="read-story-btn" class="mode-btn mode-btn-read">
+                        <div class="mode-icon">📖</div>
+                        <div class="mode-text">לקרוא את הסיפור</div>
+                        <div class="mode-description">קראי את הסיפור משפט אחר משפט</div>
+                    </button>
+                    
+                    <button id="play-games-btn" class="mode-btn mode-btn-play">
+                        <div class="mode-icon">🎮</div>
+                        <div class="mode-text">לשחק משחקים</div>
+                        <div class="mode-description">שחקי משחקי מילים מהסיפור</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Reading Screen -->
+        <div id="reading-screen" class="screen">
+            <div class="screen-header">
+                <button id="back-to-mode-from-reading" class="back-btn">
+                    <span>⚙️</span>
+                    <span>אפשרויות</span>
+                </button>
+                <h2 id="reading-title" class="screen-title">הסיפור</h2>
+                <button id="reading-audio-toggle" class="audio-toggle-btn" title="השמע/השתק">
+                    <span class="audio-icon">🔊</span>
+                </button>
+            </div>
+            
+            <div class="reading-content">
+                <div class="reading-area">
+                    <div id="story-sentences" class="story-sentences">
+                        <!-- Sentences will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="reading-completion-buttons">
+                        <button id="play-games-after-reading" class="btn-primary">
+                            <span>🎮</span>
+                            <span>לשחק עכשיו</span>
+                        </button>
+                        <!-- <button id="read-again-btn" class="btn-secondary">
+                            <span>🔄</span>
+                            <span>קראי שוב</span>
+                        </button> -->
+                        <button id="back-to-menu-from-reading" class="btn-secondary">
+                            <span>📚</span>
+                            <span>חזרה לתפריט</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Game Screen -->
         <div id="game-screen" class="screen">
             <div class="game-header">

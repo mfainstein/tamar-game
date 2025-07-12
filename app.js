@@ -8,6 +8,9 @@ class TamarReadingGame {
         this.completedGames = 0;
         this.audioEnabled = true;
         
+        // Reading mode state
+        this.isReading = false;
+        
         this.gameTypeNames = [
             'מצאי את המילה',
             'מצאי את התמונה', 
@@ -63,6 +66,36 @@ class TamarReadingGame {
         document.getElementById('audio-toggle').addEventListener('click', () => {
             this.toggleAudio();
         });
+
+        // Mode selection listeners
+        document.getElementById('back-to-stories-from-mode').addEventListener('click', () => {
+            this.showStorySelection();
+        });
+
+        document.getElementById('read-story-btn').addEventListener('click', () => {
+            this.startReading();
+        });
+
+        document.getElementById('play-games-btn').addEventListener('click', () => {
+            this.startStory(this.currentStory);
+        });
+
+        // Reading screen listeners
+        document.getElementById('back-to-mode-from-reading').addEventListener('click', () => {
+            this.showModeSelection();
+        });
+
+        document.getElementById('reading-audio-toggle').addEventListener('click', () => {
+            this.toggleAudio();
+        });
+
+        document.getElementById('play-games-after-reading').addEventListener('click', () => {
+            this.startStory(this.currentStory);
+        });
+
+        document.getElementById('back-to-menu-from-reading').addEventListener('click', () => {
+            this.showStorySelection();
+        });
     }
 
     showScreen(screenId) {
@@ -71,9 +104,14 @@ class TamarReadingGame {
             screen.classList.remove('active');
         });
         
-        // Clear story background if not on game or celebration screen
-        if (screenId !== 'game-screen' && screenId !== 'celebration-screen') {
+        // Clear story background if not on game, celebration, mode-selection, or reading screen
+        if (!['game-screen', 'celebration-screen', 'mode-selection', 'reading-screen'].includes(screenId)) {
             this.clearStoryBackground();
+        }
+        
+        // Reset reading screen state when leaving
+        if (this.isReading && screenId !== 'reading-screen') {
+            this.isReading = false;
         }
         
         // Add active class to target screen
@@ -135,11 +173,81 @@ class TamarReadingGame {
             `;
             
             storyCard.addEventListener('click', () => {
-                this.startStory(story);
+                this.selectStory(story);
             });
             
             storiesGrid.appendChild(storyCard);
         });
+    }
+
+    selectStory(story) {
+        this.currentStory = story;
+        this.showModeSelection();
+    }
+
+    showModeSelection() {
+        // Set story background
+        this.setStoryBackground(this.currentStory.background);
+        
+        // Update mode selection title with story name
+        document.getElementById('mode-selection-title').textContent = this.currentStory.title;
+        
+        this.showScreen('mode-selection');
+    }
+
+    startReading() {
+        this.isReading = true;
+        
+        // Update reading title
+        document.getElementById('reading-title').textContent = this.currentStory.title;
+        
+        // Display all sentences
+        this.displayAllSentences();
+        
+        this.showScreen('reading-screen');
+    }
+
+    displayAllSentences() {
+        const sentencesContainer = document.getElementById('story-sentences');
+        sentencesContainer.innerHTML = '';
+        
+        this.currentStory.sentences.forEach((sentence, index) => {
+            const sentenceItem = document.createElement('div');
+            sentenceItem.className = 'sentence-item';
+            sentenceItem.style.animationDelay = `${index * 0.1}s`;
+            
+            sentenceItem.innerHTML = `
+                <div class="sentence-text">${sentence}</div>
+                <button class="sentence-audio-btn" data-sentence="${index}">🔊</button>
+            `;
+            
+            // Add event listener to the audio button
+            const audioBtn = sentenceItem.querySelector('.sentence-audio-btn');
+            audioBtn.addEventListener('click', () => {
+                this.speakSentence(sentence, audioBtn);
+            });
+            
+            sentencesContainer.appendChild(sentenceItem);
+        });
+    }
+
+    speakSentence(sentence, audioBtn) {
+        if (!this.audioEnabled) return;
+        
+        // Remove speaking class from all buttons
+        document.querySelectorAll('.sentence-audio-btn').forEach(btn => {
+            btn.classList.remove('speaking');
+        });
+        
+        // Add speaking animation to current button
+        audioBtn.classList.add('speaking');
+        
+        this.speakHebrew(sentence);
+        
+        // Remove speaking animation after speech
+        setTimeout(() => {
+            audioBtn.classList.remove('speaking');
+        }, sentence.length * 50); // Approximate speaking time
     }
 
     startStory(story) {
@@ -442,8 +550,10 @@ class TamarReadingGame {
 
     toggleAudio() {
         this.audioEnabled = !this.audioEnabled;
-        const audioIcon = document.querySelector('.audio-icon');
-        audioIcon.textContent = this.audioEnabled ? '🔊' : '🔇';
+        const audioIcons = document.querySelectorAll('.audio-icon');
+        audioIcons.forEach(icon => {
+            icon.textContent = this.audioEnabled ? '🔊' : '🔇';
+        });
     }
 
     playCorrectSound() {
