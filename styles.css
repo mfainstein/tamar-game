@@ -12,6 +12,11 @@ body {
     direction: rtl;
     overflow: hidden;
     position: relative;
+    /* Mobile optimizations */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 /* Background Animation */
@@ -926,105 +931,392 @@ body.story-active::after {
     z-index: 1001;
 }
 
-/* Responsive Design */
+/* Mobile touch improvements */
+button, .choice-btn, .story-card, .mode-btn {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+/* Better touch targets for mobile */
 @media (max-width: 768px) {
-    .welcome-title {
-        font-size: 2.5rem;
+    button, .choice-btn, .story-card, .mode-btn {
+        min-height: 44px; /* Apple recommended minimum touch target */
     }
     
-    .cover-image {
-        width: 250px;
+    /* Prevent text selection on mobile */
+    .sentence-text, .story-title, .mode-text, .choice-text {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
     
-    
+    /* Improve scrolling on mobile */
+    .reading-content, .stories-container {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Responsive Design */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
     .stories-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
     }
     
-    .story-card {
-        height: 180px;
-    }
-    
-    .story-image {
-        height: 110px;
-    }
-    
     .game-area {
-        padding: 30px 20px;
+        padding: 40px 30px;
     }
     
-    .game-text {
-        font-size: 2.5rem;
+    .mode-selection-container {
+        padding: 30px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    /* General mobile improvements */
+    body {
+        font-size: 16px;
     }
     
-    .choices-grid {
+    /* Welcome Screen Mobile */
+    .welcome-container {
+        padding: 20px;
+    }
+    
+    .welcome-title {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+    
+    .cover-image {
+        width: 220px;
+    }
+    
+    .play-button {
+        font-size: 1.3rem;
+        padding: 18px 35px;
+    }
+    
+    /* Screen Headers Mobile */
+    .screen-header {
+        padding: 15px 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .screen-title {
+        font-size: 1.6rem;
+        order: 2;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .back-btn {
+        order: 1;
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
+    
+    /* Story Selection Mobile */
+    .stories-container {
+        padding: 20px 15px;
+    }
+    
+    .stories-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
     
-    .choice-letter {
-        font-size: 3rem;
+    .story-card {
+        height: 160px;
+        border-radius: 15px;
     }
     
-    .celebration-title {
-        font-size: 2.5rem;
+    .story-image {
+        height: 100px;
+        border-radius: 15px 15px 0 0;
     }
     
-    .celebration-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    /* Mode Selection Mobile */
-    .mode-buttons {
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .mode-btn {
-        min-height: 200px;
-        padding: 30px 20px;
-    }
-    
-    .mode-icon {
-        font-size: 3rem;
-        margin-bottom: 15px;
-    }
-    
-    .mode-text {
-        font-size: 1.6rem;
-        margin-bottom: 10px;
-    }
-    
-    .mode-description {
-        font-size: 1rem;
-    }
-    
-    /* Reading Screen Mobile */
-    .reading-area {
-        padding: 25px 15px;
-    }
-    
-    .sentence-item {
-        gap: 10px;
-        margin-bottom: 20px;
+    .story-info {
         padding: 15px;
     }
     
-    .sentence-text {
+    .story-title {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+    }
+    
+    .story-word-count {
+        font-size: 0.9rem;
+    }
+    
+    /* Mode Selection Mobile */
+    .mode-selection-container {
+        padding: 20px 15px;
+    }
+    
+    .mode-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .mode-btn {
+        min-height: 180px;
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+    
+    .mode-icon {
+        font-size: 2.8rem;
+        margin-bottom: 12px;
+    }
+    
+    .mode-text {
         font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .mode-description {
+        font-size: 0.95rem;
+        line-height: 1.3;
+    }
+    
+    /* Reading Screen Mobile */
+    .reading-content {
+        padding: 15px;
+    }
+    
+    .reading-area {
+        padding: 20px 15px;
+        border-radius: 20px;
+    }
+    
+    .sentence-item {
+        gap: 12px;
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 12px;
+    }
+    
+    .sentence-text {
+        font-size: 1.4rem;
+        line-height: 1.5;
     }
     
     .sentence-audio-btn {
         width: 45px;
         height: 45px;
         font-size: 1.1rem;
+        margin-top: 2px;
     }
     
     .reading-completion-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 12px;
+        margin-top: 25px;
+    }
+    
+    /* Game Screen Mobile */
+    .game-content {
+        padding: 20px 15px;
+    }
+    
+    .game-area {
+        padding: 25px 15px;
+        border-radius: 20px;
+    }
+    
+    .game-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .game-text {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .game-instruction {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .audio-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    .choices-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 20px;
+    }
+    
+    .choice-btn {
+        padding: 20px;
+        min-height: 100px;
+        border-radius: 15px;
+        font-size: 1.1rem;
+    }
+    
+    .choice-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .choice-text {
+        font-size: 1.2rem;
+    }
+    
+    .choice-letter {
+        font-size: 2.5rem;
+    }
+    
+    /* Game Header Mobile */
+    .game-header {
+        padding: 12px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .progress-container {
+        order: 3;
+        flex: 1 0 100%;
+        margin: 10px 0 0 0;
+        max-width: none;
+    }
+    
+    .progress-bar {
+        height: 10px; /* Slightly thicker for mobile */
+    }
+    
+    .progress-text {
+        font-size: 1rem; /* Larger for mobile readability */
+    }
+    
+    .game-header-right {
+        order: 2;
+        gap: 10px;
+    }
+    
+    .audio-toggle-btn {
+        width: 44px; /* Better touch target */
+        height: 44px;
+        font-size: 1.2rem;
+    }
+    
+    .game-type-badge {
+        font-size: 0.9rem;
+        padding: 8px 14px;
+        border-radius: 15px;
+    }
+    
+    /* Celebration Screen Mobile */
+    .celebration-title {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+    }
+    
+    .celebration-message {
+        font-size: 1.4rem;
+        margin-bottom: 30px;
+    }
+    
+    .celebration-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    /* Button improvements for mobile */
+    .btn-primary, 
+    .btn-secondary {
+        font-size: 1.1rem;
+        padding: 12px 25px;
+        border-radius: 20px;
+        min-width: 200px;
+        justify-content: center;
+    }
+}
+
+/* Small mobile phones */
+@media (max-width: 480px) {
+    .welcome-title {
+        font-size: 1.9rem;
+    }
+    
+    .cover-image {
+        width: 180px;
+    }
+    
+    .play-button {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+    }
+    
+    .screen-title {
+        font-size: 1.4rem;
+    }
+    
+    .mode-btn {
+        min-height: 160px;
+        padding: 20px 15px;
+    }
+    
+    .mode-icon {
+        font-size: 2.5rem;
+    }
+    
+    .mode-text {
+        font-size: 1.3rem;
+    }
+    
+    .sentence-text {
+        font-size: 1.2rem;
+    }
+    
+    .sentence-audio-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .game-text {
+        font-size: 1.9rem;
+    }
+    
+    .game-instruction {
+        font-size: 1.1rem;
+    }
+    
+    .choice-letter {
+        font-size: 2.2rem;
+    }
+    
+    .reading-area {
+        padding: 15px 10px;
+    }
+    
+    .sentence-item {
+        padding: 12px;
         gap: 10px;
     }
 }
