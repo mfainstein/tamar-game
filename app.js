@@ -168,7 +168,6 @@ class TamarReadingGame {
                      onerror="this.style.display='none'">
                 <div class="story-info">
                     <div class="story-title">${story.title}</div>
-                    <div class="story-word-count">${story.words.length} מילים</div>
                 </div>
             `;
             
@@ -381,7 +380,7 @@ class TamarReadingGame {
                 <div class="game-instruction">איזו מילה מתאימה לתמונה?</div>
                 <button class="audio-btn" data-word="${correctWord.word}">🔊</button>
             </div>
-            <div class="choices-grid">
+            <div class="choices-grid word-choices">
                 ${choices.map(choice => `
                     <button class="choice-btn" data-type="word" 
                             data-value="${choice.word}" data-correct="${correctWord.word}">
@@ -401,7 +400,7 @@ class TamarReadingGame {
                 <div class="game-instruction">איזו תמונה מתאימה למילה?</div>
                 <button class="audio-btn" data-word="${correctWord.word}">🔊</button>
             </div>
-            <div class="choices-grid">
+            <div class="choices-grid image-choices">
                 ${choices.map(choice => `
                     <button class="choice-btn" data-type="image" 
                             data-value="${choice.image}" data-correct="${correctWord.image}">
@@ -423,7 +422,7 @@ class TamarReadingGame {
                 <div class="game-instruction">באיזו אות מתחילה המילה?</div>
                 <button class="audio-btn" data-word="${correctWord.word}">🔊</button>
             </div>
-            <div class="choices-grid">
+            <div class="choices-grid letter-choices">
                 ${choices.map(choice => `
                     <button class="choice-btn" data-type="letter" 
                             data-value="${choice}" data-correct="${correctWord.firstLetter}">

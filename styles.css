@@ -1164,19 +1164,22 @@ button, .choice-btn, .story-card, .mode-btn {
     
     /* Game Screen Mobile */
     .game-content {
-        padding: 20px 15px;
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 20px;
     }
     
     .game-area {
-        padding: 25px 15px;
+        padding: 20px 15px;
         border-radius: 20px;
+        width: 100%;
     }
     
     .game-image {
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
         border-radius: 15px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
     
     .game-text {
@@ -1199,6 +1202,36 @@ button, .choice-btn, .story-card, .mode-btn {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
         margin-top: 20px;
+    }
+    
+    /* Special handling for letter selection game on mobile */
+    .choices-grid:has(.choice-letter) {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .choices-grid:has(.choice-letter) .choice-btn {
+        min-height: 100px;
+        padding: 15px 10px;
+    }
+    
+    .choices-grid:has(.choice-letter) .choice-letter {
+        font-size: 3rem;
+    }
+    
+    /* Fallback for browsers that don't support :has() */
+    .letter-choices {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+    }
+    
+    .letter-choices .choice-btn {
+        min-height: 100px !important;
+        padding: 15px 10px !important;
+    }
+    
+    .letter-choices .choice-letter {
+        font-size: 3rem !important;
     }
     
     .choice-btn {
@@ -1351,6 +1384,12 @@ button, .choice-btn, .story-card, .mode-btn {
         font-size: 1.1rem;
     }
     
+    .game-image {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 8px;
+    }
+    
     .choice-letter {
         font-size: 3rem;
         font-weight: 800;
@@ -1364,6 +1403,21 @@ button, .choice-btn, .story-card, .mode-btn {
     .choices-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
+    }
+    
+    /* Letter choices on small phones */
+    .letter-choices {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+    }
+    
+    .letter-choices .choice-btn {
+        min-height: 90px !important;
+        padding: 12px 8px !important;
+    }
+    
+    .letter-choices .choice-letter {
+        font-size: 2.5rem !important;
     }
     
     .reading-area {
