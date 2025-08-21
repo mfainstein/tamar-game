@@ -11,6 +11,12 @@ class TamarReadingGame {
         // Reading mode state
         this.isReading = false;
         
+        // Jigsaw puzzle instance
+        this.jigsawPuzzle = null;
+        
+        // Stories with jigsaw images
+        this.jigsawStories = ['good_morning', 'blue_ad_orange_ad', 'grocery', 'new_house'];
+        
         this.gameTypeNames = [
             'מצאי את המילה',
             'מצאי את התמונה', 
@@ -96,6 +102,30 @@ class TamarReadingGame {
         document.getElementById('back-to-menu-from-reading').addEventListener('click', () => {
             this.showStorySelection();
         });
+
+        // Jigsaw puzzle listeners
+        document.getElementById('play-jigsaw-btn').addEventListener('click', () => {
+            this.startJigsawPuzzle();
+        });
+
+        document.getElementById('back-to-mode-from-jigsaw').addEventListener('click', () => {
+            this.showModeSelection();
+        });
+
+        document.getElementById('reset-puzzle-btn').addEventListener('click', () => {
+            if (this.jigsawPuzzle) {
+                this.jigsawPuzzle.reset();
+            }
+        });
+
+        document.getElementById('back-to-menu-from-jigsaw').addEventListener('click', () => {
+            this.showStorySelection();
+        });
+
+        // Listen for puzzle completion
+        document.addEventListener('puzzleCompleted', () => {
+            this.handleJigsawCompletion();
+        });
     }
 
     showScreen(screenId) {
@@ -104,8 +134,8 @@ class TamarReadingGame {
             screen.classList.remove('active');
         });
         
-        // Clear story background if not on game, celebration, mode-selection, or reading screen
-        if (!['game-screen', 'celebration-screen', 'mode-selection', 'reading-screen'].includes(screenId)) {
+        // Clear story background if not on game, celebration, mode-selection, reading, or jigsaw screen
+        if (!['game-screen', 'celebration-screen', 'mode-selection', 'reading-screen', 'jigsaw-screen'].includes(screenId)) {
             this.clearStoryBackground();
         }
         
@@ -191,7 +221,56 @@ class TamarReadingGame {
         // Update mode selection title with story name
         document.getElementById('mode-selection-title').textContent = this.currentStory.title;
         
+        // Show/hide jigsaw button based on story
+        const jigsawBtn = document.getElementById('play-jigsaw-btn');
+        if (this.jigsawStories.includes(this.currentStory.id)) {
+            jigsawBtn.style.display = 'block';
+        } else {
+            jigsawBtn.style.display = 'none';
+        }
+        
         this.showScreen('mode-selection');
+    }
+
+    startJigsawPuzzle() {
+        // Update jigsaw title
+        document.getElementById('jigsaw-title').textContent = `פאזל - ${this.currentStory.title}`;
+        
+        // Initialize the jigsaw puzzle
+        if (!this.jigsawPuzzle) {
+            this.jigsawPuzzle = new JigsawPuzzle();
+        }
+        
+        // Get the jigsaw image path
+        const imagePath = `images/jigsaw/${this.currentStory.id}.png`;
+        
+        this.showScreen('jigsaw-screen');
+        
+        // Initialize puzzle after screen is shown
+        setTimeout(() => {
+            this.jigsawPuzzle.init(imagePath, 'jigsaw-container');
+        }, 100);
+    }
+
+    handleJigsawCompletion() {
+        // Play celebration sound
+        this.playCelebrationSound();
+        
+        // Show completion message
+        setTimeout(() => {
+            const message = document.createElement('div');
+            message.className = 'jigsaw-completion-message';
+            message.innerHTML = `
+                <h2>🎉 כל הכבוד! 🎉</h2>
+                <p>הרכבת את הפאזל בהצלחה!</p>
+            `;
+            document.getElementById('jigsaw-container').appendChild(message);
+            
+            // Remove message after 3 seconds
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }, 500);
     }
 
     startReading() {

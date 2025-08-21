@@ -844,6 +844,118 @@ body.story-active::after {
     color: #333;
 }
 
+/* Jigsaw Puzzle Styles */
+.jigsaw-content {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.jigsaw-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.puzzle-canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#jigsaw-canvas {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: move;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.jigsaw-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mode-btn-jigsaw {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.mode-btn-jigsaw:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-3px);
+}
+
+.jigsaw-completion-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: bounceIn 0.5s ease-out;
+    z-index: 100;
+}
+
+.jigsaw-completion-message h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.jigsaw-completion-message p {
+    font-size: 1.2em;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Mobile optimizations for jigsaw */
+@media (max-width: 768px) {
+    .jigsaw-content {
+        padding: 10px;
+    }
+    
+    .jigsaw-container {
+        padding: 10px;
+        width: 100%;
+    }
+    
+    #jigsaw-canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .jigsaw-buttons {
+        width: 100%;
+    }
+    
+    .jigsaw-buttons button {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
 /* Celebration Screen */
 .celebration-container {
     display: flex;

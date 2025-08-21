@@ -83,6 +83,12 @@
                         <div class="mode-text">לשחק משחקים</div>
                         <div class="mode-description">שחקי משחקי מילים מהסיפור</div>
                     </button>
+                    
+                    <button id="play-jigsaw-btn" class="mode-btn mode-btn-jigsaw" style="display: none;">
+                        <div class="mode-icon">🧩</div>
+                        <div class="mode-text">פאזל</div>
+                        <div class="mode-description">הרכיבי פאזל של התמונה</div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -154,6 +160,34 @@
             </div>
         </div>
 
+        <!-- Jigsaw Puzzle Screen -->
+        <div id="jigsaw-screen" class="screen">
+            <div class="screen-header">
+                <button id="back-to-mode-from-jigsaw" class="back-btn">
+                    <span>⚙️</span>
+                    <span>אפשרויות</span>
+                </button>
+                <h2 id="jigsaw-title" class="screen-title">פאזל</h2>
+            </div>
+            
+            <div class="jigsaw-content">
+                <div id="jigsaw-container" class="jigsaw-container">
+                    <!-- Puzzle canvas will be inserted here -->
+                </div>
+                
+                <div class="jigsaw-buttons">
+                    <button id="reset-puzzle-btn" class="btn-secondary">
+                        <span>🔄</span>
+                        <span>ערבב מחדש</span>
+                    </button>
+                    <button id="back-to-menu-from-jigsaw" class="btn-secondary">
+                        <span>📚</span>
+                        <span>חזרה לתפריט</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Celebration Screen -->
         <div id="celebration-screen" class="screen">
             <div class="celebration-container">
@@ -184,6 +218,7 @@
 
     </div>
 
+    <script src="jigsaw-puzzle.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
