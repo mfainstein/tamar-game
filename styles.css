@@ -1592,3 +1592,172 @@ button, .choice-btn, .story-card, .mode-btn {
         gap: 10px;
     }
 }
+
+/* Word Composition Game Styles */
+.word-composition-area {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    padding: 20px;
+}
+
+.word-slots {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.letter-slot {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.letter-slot.filled {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.letter-slot.correct {
+    background: rgba(76, 175, 80, 0.3);
+    border-color: #4CAF50;
+    animation: correctPulse 0.5s ease;
+}
+
+.letter-slot.incorrect {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: #f44336;
+    animation: shake 0.5s ease;
+}
+
+.letter-bank {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 500px;
+}
+
+.letter-tile {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.letter-tile:hover:not(.used) {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.letter-tile.used {
+    opacity: 0.4;
+    transform: scale(0.9);
+    background: linear-gradient(135deg, #a8a8a8 0%, #808080 100%);
+    cursor: default;
+}
+
+.composition-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.reset-word-btn,
+.check-word-btn {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reset-word-btn:hover,
+.check-word-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.check-word-btn {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+}
+
+/* Mobile adjustments for word composition */
+@media (max-width: 768px) {
+    .word-composition-area {
+        gap: 20px;
+        padding: 15px;
+    }
+    
+    .letter-slot {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+    }
+    
+    .letter-tile {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+    }
+    
+    .letter-bank {
+        gap: 10px;
+    }
+    
+    .reset-word-btn,
+    .check-word-btn {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .letter-slot {
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
+        gap: 8px;
+    }
+    
+    .letter-tile {
+        width: 42px;
+        height: 42px;
+        font-size: 1.3rem;
+    }
+    
+    .composition-controls {
+        gap: 10px;
+    }
+    
+    .reset-word-btn,
+    .check-word-btn {
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+}

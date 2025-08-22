@@ -20,7 +20,8 @@ class TamarReadingGame {
         this.gameTypeNames = [
             'מצאי את המילה',
             'מצאי את התמונה', 
-            'מצאי את האות הראשונה'
+            'מצאי את האות הראשונה',
+            'בני את המילה'
         ];
         
         this.init();
@@ -352,7 +353,7 @@ class TamarReadingGame {
         // Create all possible game combinations
         const allGames = [];
         story.words.forEach(word => {
-            for (let gameType = 0; gameType < 3; gameType++) {
+            for (let gameType = 0; gameType < 4; gameType++) {
                 allGames.push({ word, gameType });
             }
         });
@@ -438,6 +439,9 @@ class TamarReadingGame {
             case 2:
                 gameHTML = this.renderFirstLetterGame(currentWord);
                 break;
+            case 3:
+                gameHTML = this.renderWordCompositionGame(currentWord);
+                break;
         }
         
         gameArea.innerHTML = gameHTML;
@@ -515,6 +519,58 @@ class TamarReadingGame {
         `;
     }
 
+    renderWordCompositionGame(correctWord) {
+        const letterChoices = this.generateCompositionLetters(correctWord);
+        
+        return `
+            <div class="game-question">
+                <img src="${correctWord.image}" alt="${correctWord.word}" 
+                     class="game-image" onerror="this.style.display='none'">
+                <div class="game-instruction">בני את המילה מהאותיות</div>
+                <button class="audio-btn" data-word="${correctWord.word}">🔊</button>
+            </div>
+            
+            <div class="word-composition-area">
+                <div class="word-slots" data-correct-word="${correctWord.word}">
+                    ${correctWord.word.split('').map((_, index) => 
+                        `<div class="letter-slot" data-index="${index}"></div>`
+                    ).join('')}
+                </div>
+                
+                <div class="letter-bank">
+                    ${letterChoices.map((letter, index) => `
+                        <button class="letter-tile" data-letter="${letter}" data-index="${index}">
+                            ${letter}
+                        </button>
+                    `).join('')}
+                </div>
+                
+                <div class="composition-controls">
+                    <button class="reset-word-btn">🔄 נקה</button>
+                    <button class="check-word-btn">✓ בדוק</button>
+                </div>
+            </div>
+        `;
+    }
+
+    generateCompositionLetters(correctWord) {
+        const wordLetters = correctWord.word.split('');
+        const extraLetters = this.getExtraLetters(correctWord.word);
+        const allLetters = [...wordLetters, ...extraLetters];
+        return this.shuffle(allLetters);
+    }
+
+    getExtraLetters(word) {
+        const hebrewLetters = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'];
+        const wordLetters = new Set(word.split(''));
+        const availableLetters = hebrewLetters.filter(l => !wordLetters.has(l));
+        
+        // Add 2-4 extra letters to make it challenging but not too hard
+        const numExtraLetters = Math.min(3, Math.max(2, 7 - word.length));
+        const shuffled = this.shuffle(availableLetters);
+        return shuffled.slice(0, numExtraLetters);
+    }
+
     generateWordChoices(correctWord) {
         const allWords = this.currentStory.words.filter(w => w.word !== correctWord.word);
         const shuffled = this.shuffle([...allWords]);
@@ -560,13 +616,98 @@ class TamarReadingGame {
             });
         }
 
-        // Choice buttons
+        // Choice buttons (for games 0, 1, 2)
         const choiceBtns = document.querySelectorAll('.choice-btn[data-type]');
         choiceBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 this.handleChoice(btn);
             });
         });
+
+        // Word composition game (game 3)
+        const letterTiles = document.querySelectorAll('.letter-tile');
+        const letterSlots = document.querySelectorAll('.letter-slot');
+        const resetBtn = document.querySelector('.reset-word-btn');
+        const checkBtn = document.querySelector('.check-word-btn');
+
+        if (letterTiles.length > 0) {
+            this.setupWordCompositionListeners(letterTiles, letterSlots, resetBtn, checkBtn);
+        }
+    }
+
+    setupWordCompositionListeners(letterTiles, letterSlots, resetBtn, checkBtn) {
+        const correctWord = document.querySelector('.word-slots').dataset.correctWord;
+        let composedWord = new Array(letterSlots.length).fill('');
+
+        // Letter tile click handler
+        letterTiles.forEach(tile => {
+            tile.addEventListener('click', () => {
+                if (tile.classList.contains('used')) {
+                    // Remove letter from slots
+                    const slotIndex = composedWord.indexOf(tile.dataset.letter);
+                    if (slotIndex !== -1) {
+                        composedWord[slotIndex] = '';
+                        letterSlots[slotIndex].textContent = '';
+                        letterSlots[slotIndex].classList.remove('filled');
+                        tile.classList.remove('used');
+                    }
+                } else {
+                    // Add letter to first empty slot
+                    const emptyIndex = composedWord.indexOf('');
+                    if (emptyIndex !== -1) {
+                        composedWord[emptyIndex] = tile.dataset.letter;
+                        letterSlots[emptyIndex].textContent = tile.dataset.letter;
+                        letterSlots[emptyIndex].classList.add('filled');
+                        tile.classList.add('used');
+                    }
+                }
+            });
+        });
+
+        // Reset button
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                composedWord.fill('');
+                letterSlots.forEach(slot => {
+                    slot.textContent = '';
+                    slot.classList.remove('filled', 'correct', 'incorrect');
+                });
+                letterTiles.forEach(tile => {
+                    tile.classList.remove('used');
+                });
+            });
+        }
+
+        // Check button
+        if (checkBtn) {
+            checkBtn.addEventListener('click', () => {
+                const word = composedWord.join('');
+                if (word === correctWord) {
+                    // Correct!
+                    letterSlots.forEach(slot => slot.classList.add('correct'));
+                    this.playCorrectSound();
+                    
+                    // Disable interaction
+                    letterTiles.forEach(tile => tile.style.pointerEvents = 'none');
+                    resetBtn.style.pointerEvents = 'none';
+                    checkBtn.style.pointerEvents = 'none';
+                    
+                    setTimeout(() => {
+                        this.nextGame();
+                    }, 1500);
+                } else {
+                    // Incorrect
+                    letterSlots.forEach(slot => {
+                        if (slot.textContent) slot.classList.add('incorrect');
+                    });
+                    this.playIncorrectSound();
+                    
+                    setTimeout(() => {
+                        letterSlots.forEach(slot => slot.classList.remove('incorrect'));
+                    }, 1000);
+                }
+            });
+        }
     }
 
     handleChoice(buttonElement) {
