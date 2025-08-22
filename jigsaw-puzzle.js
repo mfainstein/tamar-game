@@ -13,11 +13,34 @@ class JigsawPuzzle {
         this.pieceHeight = 0;
         this.isCompleted = false;
         this.snappingThreshold = 30;
+        this.difficulty = 'medium';
+        this.rotation = false;
+        
+        // Difficulty settings
+        this.difficultySettings = {
+            veryEasy: { cols: 2, rows: 2, snapping: 40, rotation: false, name: 'קל מאוד' },
+            easy: { cols: 3, rows: 2, snapping: 35, rotation: false, name: 'קל' },
+            medium: { cols: 3, rows: 3, snapping: 30, rotation: false, name: 'בינוני' },
+            hard: { cols: 4, rows: 4, snapping: 25, rotation: false, name: 'קשה' },
+            veryHard: { cols: 5, rows: 5, snapping: 20, rotation: true, name: 'קשה מאוד' }
+        };
     }
 
-    async init(imagePath, containerId) {
+    async init(imagePath, containerId, difficulty = 'medium') {
+        this.setDifficulty(difficulty);
+        
         const container = document.getElementById(containerId);
         container.innerHTML = `
+            <div class="puzzle-difficulty-selector">
+                <label>רמת קושי:</label>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn ${difficulty === 'veryEasy' ? 'active' : ''}" data-difficulty="veryEasy">קל מאוד (2×2)</button>
+                    <button class="difficulty-btn ${difficulty === 'easy' ? 'active' : ''}" data-difficulty="easy">קל (3×2)</button>
+                    <button class="difficulty-btn ${difficulty === 'medium' ? 'active' : ''}" data-difficulty="medium">בינוני (3×3)</button>
+                    <button class="difficulty-btn ${difficulty === 'hard' ? 'active' : ''}" data-difficulty="hard">קשה (4×4)</button>
+                    <button class="difficulty-btn ${difficulty === 'veryHard' ? 'active' : ''}" data-difficulty="veryHard">קשה מאוד (5×5)</button>
+                </div>
+            </div>
             <div class="puzzle-canvas-container">
                 <canvas id="jigsaw-canvas"></canvas>
             </div>
@@ -26,12 +49,49 @@ class JigsawPuzzle {
         this.canvas = document.getElementById('jigsaw-canvas');
         this.ctx = this.canvas.getContext('2d');
         
+        // Setup difficulty selector
+        this.setupDifficultySelector(imagePath, containerId);
+        
         await this.loadImage(imagePath);
         this.setupCanvas();
         this.createPieces();
         this.shufflePieces();
         this.setupEventListeners();
         this.draw();
+    }
+    
+    setDifficulty(difficulty) {
+        this.difficulty = difficulty;
+        const settings = this.difficultySettings[difficulty];
+        this.cols = settings.cols;
+        this.rows = settings.rows;
+        this.snappingThreshold = settings.snapping;
+        this.rotation = settings.rotation;
+    }
+    
+    setupDifficultySelector(imagePath, containerId) {
+        const buttons = document.querySelectorAll('.difficulty-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const newDifficulty = e.target.dataset.difficulty;
+                if (newDifficulty !== this.difficulty) {
+                    // Update active button
+                    buttons.forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    // Save difficulty preference
+                    localStorage.setItem('jigsawDifficulty', newDifficulty);
+                    
+                    // Reinitialize with new difficulty
+                    this.setDifficulty(newDifficulty);
+                    this.setupCanvas();
+                    this.createPieces();
+                    this.shufflePieces();
+                    this.isCompleted = false;
+                    this.draw();
+                }
+            });
+        });
     }
 
     async loadImage(imagePath) {
@@ -70,6 +130,7 @@ class JigsawPuzzle {
                     currentY: 0,
                     width: this.pieceWidth,
                     height: this.pieceHeight,
+                    rotation: 0,
                     isPlaced: false
                 });
             }
@@ -84,6 +145,41 @@ class JigsawPuzzle {
         this.pieces.forEach(piece => {
             piece.currentX = margin + Math.random() * (availableWidth - piece.width);
             piece.currentY = margin + Math.random() * (availableHeight - piece.height);
+            piece.isPlaced = false;
+            
+            // Add rotation for very hard difficulty
+            if (this.rotation) {
+                piece.rotation = Math.floor(Math.random() * 4) * 90;
+            } else {
+                piece.rotation = 0;
+            }
+        });
+        
+        // For harder difficulties, ensure pieces are more spread out
+        if (this.difficulty === 'hard' || this.difficulty === 'veryHard') {
+            this.spreadPieces();
+        }
+    }
+    
+    spreadPieces() {
+        // Spread pieces more evenly to avoid overlapping
+        const gridCols = Math.ceil(Math.sqrt(this.pieces.length));
+        const gridRows = Math.ceil(this.pieces.length / gridCols);
+        const cellWidth = (this.canvas.width - 40) / gridCols;
+        const cellHeight = (this.canvas.height - 40) / gridRows;
+        
+        const shuffledPieces = [...this.pieces].sort(() => Math.random() - 0.5);
+        
+        shuffledPieces.forEach((piece, index) => {
+            const gridX = index % gridCols;
+            const gridY = Math.floor(index / gridCols);
+            
+            piece.currentX = 20 + gridX * cellWidth + Math.random() * (cellWidth - piece.width);
+            piece.currentY = 20 + gridY * cellHeight + Math.random() * (cellHeight - piece.height);
+            
+            // Ensure piece stays within canvas
+            piece.currentX = Math.max(10, Math.min(piece.currentX, this.canvas.width - piece.width - 10));
+            piece.currentY = Math.max(10, Math.min(piece.currentY, this.canvas.height - piece.height - 10));
         });
     }
 
@@ -92,9 +188,33 @@ class JigsawPuzzle {
         this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
         this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
         
+        // Prevent context menu for right-click rotation
+        this.canvas.addEventListener('contextmenu', (e) => {
+            if (this.rotation) {
+                e.preventDefault();
+            }
+        });
+        
         this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
         this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this));
         this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+        
+        // Double tap for rotation on mobile (very hard mode)
+        let lastTap = 0;
+        this.canvas.addEventListener('touchstart', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0 && this.rotation) {
+                e.preventDefault();
+                const pos = this.getTouchPos(e);
+                const piece = this.getPieceAtPosition(pos.x, pos.y);
+                if (piece && !piece.isPlaced) {
+                    piece.rotation = (piece.rotation + 90) % 360;
+                    this.draw();
+                }
+            }
+            lastTap = currentTime;
+        });
     }
 
     getMousePos(e) {
@@ -127,6 +247,18 @@ class JigsawPuzzle {
 
     handleMouseDown(e) {
         const pos = this.getMousePos(e);
+        
+        // Check for right click to rotate (only in very hard mode)
+        if (e.button === 2 && this.rotation) {
+            e.preventDefault();
+            const piece = this.getPieceAtPosition(pos.x, pos.y);
+            if (piece && !piece.isPlaced) {
+                piece.rotation = (piece.rotation + 90) % 360;
+                this.draw();
+            }
+            return;
+        }
+        
         this.draggedPiece = this.getPieceAtPosition(pos.x, pos.y);
         
         if (this.draggedPiece) {
@@ -201,9 +333,13 @@ class JigsawPuzzle {
             Math.pow(piece.currentY - correctY, 2)
         );
         
-        if (distance < this.snappingThreshold) {
+        // Check rotation for very hard mode
+        const correctRotation = !this.rotation || piece.rotation % 360 === 0;
+        
+        if (distance < this.snappingThreshold && correctRotation) {
             piece.currentX = correctX;
             piece.currentY = correctY;
+            piece.rotation = 0;
             piece.isPlaced = true;
             this.playSnapSound();
         }
@@ -212,7 +348,10 @@ class JigsawPuzzle {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        this.ctx.globalAlpha = 0.2;
+        // Draw guide image with lower opacity for harder difficulties
+        const guideOpacity = this.difficulty === 'veryHard' ? 0.1 : 
+                           this.difficulty === 'hard' ? 0.15 : 0.2;
+        this.ctx.globalAlpha = guideOpacity;
         this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
         this.ctx.globalAlpha = 1.0;
         
@@ -223,6 +362,15 @@ class JigsawPuzzle {
             const sourceHeight = this.image.height / this.rows;
             
             this.ctx.save();
+            
+            // Apply rotation if needed
+            if (piece.rotation && !piece.isPlaced) {
+                const centerX = piece.currentX + piece.width / 2;
+                const centerY = piece.currentY + piece.height / 2;
+                this.ctx.translate(centerX, centerY);
+                this.ctx.rotate(piece.rotation * Math.PI / 180);
+                this.ctx.translate(-centerX, -centerY);
+            }
             
             if (!piece.isPlaced) {
                 this.ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
@@ -242,8 +390,24 @@ class JigsawPuzzle {
             
             this.ctx.strokeRect(piece.currentX, piece.currentY, piece.width, piece.height);
             
+            // Add rotation indicator for very hard mode
+            if (this.rotation && !piece.isPlaced && piece.rotation % 360 !== 0) {
+                this.ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                this.ctx.beginPath();
+                this.ctx.arc(piece.currentX + piece.width - 10, piece.currentY + 10, 5, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+            
             this.ctx.restore();
         });
+        
+        // Draw difficulty indicator
+        this.ctx.save();
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        this.ctx.font = '14px Heebo';
+        this.ctx.textAlign = 'left';
+        this.ctx.fillText(this.difficultySettings[this.difficulty].name, 10, 20);
+        this.ctx.restore();
     }
 
     checkCompletion() {

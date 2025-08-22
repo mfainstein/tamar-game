@@ -244,11 +244,14 @@ class TamarReadingGame {
         // Get the jigsaw image path
         const imagePath = `images/jigsaw/${this.currentStory.id}.png`;
         
+        // Get saved difficulty preference or default to 'medium'
+        const savedDifficulty = localStorage.getItem('jigsawDifficulty') || 'medium';
+        
         this.showScreen('jigsaw-screen');
         
         // Initialize puzzle after screen is shown
         setTimeout(() => {
-            this.jigsawPuzzle.init(imagePath, 'jigsaw-container');
+            this.jigsawPuzzle.init(imagePath, 'jigsaw-container', savedDifficulty);
         }, 100);
     }
 
